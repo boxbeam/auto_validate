@@ -1,10 +1,8 @@
-use std::collections::HashMap;
-
 use proc_macro::TokenStream;
 use proc_macro2::Span;
 use quote::quote;
 use syn::{
-    parse_macro_input, Attribute, Block, FnArg, ItemFn, Lifetime, Meta, MetaList, Pat, Path, Type,
+    parse_macro_input, Attribute, Block, FnArg, ItemFn, Lifetime, Meta, MetaList, Pat, Type,
 };
 
 fn find_validate_attr(attributes: &Vec<Attribute>) -> Option<usize> {

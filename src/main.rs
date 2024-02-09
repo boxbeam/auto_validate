@@ -1,5 +1,5 @@
 use auto_validate_macro::auto_validate;
-use validator::{ValidationError, ValidationErrors};
+use validator::ValidationErrors;
 
 fn main() {
     validation_function("Test".into()).unwrap();
