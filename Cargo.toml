@@ -1,0 +1,9 @@
+workspace = { members = ["auto_validate_macro"] }
+[package]
+name = "auto_validate"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+auto_validate_macro = { version = "0.1.0", path = "auto_validate_macro" }
+validator = { version = "0.16.1", features = ["derive"] }
