@@ -32,6 +32,7 @@ pub fn auto_validate(_args: TokenStream, input: TokenStream) -> TokenStream {
     let mut args = Vec::new();
     let mut types = Vec::new();
     let mut validations = Vec::new();
+    let mut lifetime_used = false;
     for input in &mut func.sig.inputs {
         let FnArg::Typed(arg) = input else { continue };
         let Pat::Ident(ident) = &*arg.pat else {
@@ -46,16 +47,18 @@ pub fn auto_validate(_args: TokenStream, input: TokenStream) -> TokenStream {
             let mut inner = inner.clone();
             inner.lifetime = Some(Lifetime::new("'a", Span::call_site()));
             types.push(Type::Reference(inner));
+            lifetime_used = true;
         } else {
             types.push(*(arg.ty).clone());
         }
         validations.push(attr);
     }
     let body = &func.block;
+    let lifetime = lifetime_used.then(|| quote! {<'a>});
     let validation = quote! {
         {
             #[derive(validator::Validate)]
-            struct __validate<'a> {
+            struct __validate #lifetime {
                 #(
                     #validations
                     #args: #types
